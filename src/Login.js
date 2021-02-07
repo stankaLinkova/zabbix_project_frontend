@@ -6,13 +6,14 @@ function Login(props) {
   const [loading, setLoading] = useState(false);
   const username = useFormInput('');
   const password = useFormInput('');
+  const url = useFormInput('');
   const [error, setError] = useState(null);
 
   // handle button click of login form
   const handleLogin = () => {
     setError(null);
     setLoading(true);
-    http.post('http://localhost:3000/api/v1/zabbix/login', { url: "https://zabbix.csirt.upjs.sk", username: username.value, password: password.value }).then(response => {
+    http.post('http://localhost:3000/api/v1/zabbix/login', { url: url.value, username: username.value, password: password.value }).then(response => {
       setLoading(false);
       setUserSession(response.data.token, response.data.user);
       props.history.push('/dashboard');
@@ -26,6 +27,10 @@ function Login(props) {
   return (
     <div>
       Login<br /><br />
+      <div>
+        URL<br />
+        <input type="text" {...url} autoComplete="new-password" />
+      </div>
       <div>
         Username<br />
         <input type="text" {...username} autoComplete="new-password" />
