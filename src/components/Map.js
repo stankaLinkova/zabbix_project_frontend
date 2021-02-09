@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import DataTable from "react-data-table-component";
 import { getMaps } from "../services/authService";
+import {  logoutUser, removeUserSession } from '../Utils/Common';
 
 class Map extends Component {
   constructor(props) {
@@ -13,8 +14,8 @@ class Map extends Component {
 
     this.columns = [
       {
-        name: "The links to the maps",
-        cell: (row) => <a href={row.link}>{row.link}</a>,
+        name: "THE LINKS TO THE MAPS",
+        cell: (row)=> row.charAt(0)=='h' ? <a href={row}>{row}</a> : <a>{row}</a>
       },
     ];
 
@@ -25,44 +26,59 @@ class Map extends Component {
     try {
       let { data: post } = await getMaps(this.props.hostsId);
       const test = post[0].error;
-      if (test === undefined) {
-        post = post.map((str) => ({ link: str }));
-        this.setState({ items: post });
-        this.setState({ isLoaded: true });
-      } else {
-        this.setState({ mapExists: true });
-      }
+      this.setState({items: post});
+      this.setState({ isLoaded: true });
+
+    
     } catch (err) {
       this.props.history.push("/");
     }
   }
 
+  handleLogout = async() => {
+    await logoutUser();
+    removeUserSession();
+    this.props.history.push('/login');
+  }
+
+  
   handleMapExists() {
     this.props.history.push("/hosts");
   }
 
+  handleItems(){
+    let maps = [];
+    let items = this.state.items;
+    console.log("Pred forom");
+    for (let index = 0; index < items.length; index++) {
+     if (items[index].error === undefined){
+       maps.push(items[index]);
+     } else {
+       maps.push(items[index].error.data);
+       console.log('Vo fore', items[index].error);
+     }      
+    }
+
+    console.log('Cele maps', maps);
+    return maps;
+  }
+
   render() {
-    if (this.state.mapExists) {
-      return (
-        <div>
-          <div> THE MAP ALREADY EXISTS!</div>
-          <button
-            type="button"
-            className="btn btn-secondary m-2"
-            onClick={this.handleMapExists}
-          >
-            Go back!
-          </button>
-        </div>
-      );
-    } else if (!this.state.isLoaded) {
+   if (!this.state.isLoaded) {
       return <div>Loading...</div>;
     } else {
       return (
         <div className="container">
+          <button
+            type="button"
+            className="btn btn-outline-dark fixed-bottom m-2"
+            onClick={this.handleLogout}
+            >
+            Log out
+          </button>
           <DataTable
             columns={this.columns}
-            data={this.state.items}
+            data={this.handleItems()}
             highlightOnHover
           />
         </div>

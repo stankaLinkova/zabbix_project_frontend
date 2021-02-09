@@ -12,6 +12,8 @@ import PublicRoute from './Utils/PublicRoute';
 import { getToken, removeUserSession, setUserSession } from './Utils/Common';
 
 import http from "./services/httpService";
+import {  logoutUser } from './Utils/Common';
+import {Redirect } from 'react-router-dom';
 
 
 function App() {
@@ -40,7 +42,6 @@ function App() {
 
   const handleHosts = (groups) => {
     let idsSelected = [];
-    console.log(idsSelected);
     groups.map((group) => {
       return idsSelected.push(Number(group[Object.keys(group)[0]]));
     });
@@ -49,14 +50,11 @@ function App() {
 
   const handleMap = (hosts) => {
     let idsSelected = [];
-    console.log(idsSelected);
     hosts.map((host) => {
       return idsSelected.push(host[Object.keys(host)[0]]);
     });
     sethostsId(idsSelected);
   };
-
-
 
 
 
@@ -78,14 +76,15 @@ function App() {
                   <div className="nav-link"><NavLink style={{ color: 'white' }} exact activeClassName="active" to="/">Home</NavLink></div>
                 </li>
                 <li className="nav-item">
-                  <div className="nav-link"><NavLink style={{ color: 'white' }} activeClassName="active" to="/login">Login</NavLink><small>(Access without token only)</small></div>
+                  <div className="nav-link"><NavLink style={{ color: 'white' }} activeClassName="active" to="/login">Login</NavLink></div>
                 </li>
                 <li className="nav-item">
-                  <div className="nav-link"><NavLink style={{ color: 'white' }} activeClassName="active" to="/host_groups">Host Groups</NavLink><small>(Access with token only)</small></div>
+                  <div className="nav-link"><NavLink style={{ color: 'white' }} activeClassName="active" to="/host_groups">Host Groups</NavLink></div>
                 </li>
               </ul>
             </div>
           </nav>
+          
 
 
 

@@ -1,8 +1,6 @@
 import React, { useState } from 'react';
 import { setUserSession } from '../Utils/Common';
 import http from "../services/httpService";
-import { apiUrl } from "../config.json";
-import "../App.css";
 import { Button, FormGroup, Label, Input } from "reactstrap";
 
 function Login(props) {
@@ -16,10 +14,10 @@ function Login(props) {
   const handleLogin = () => {
     setError(null);
     setLoading(true);
-    http.post(apiUrl + '/login', { url: url.value, username: username.value, password: password.value }).then(response => {
+    http.post('http://localhost:3000/api/v1/zabbix/login', { url: url.value, username: username.value, password: password.value }).then(response => {
       setLoading(false);
       setUserSession(response.data.token, response.data.user);
-      props.history.push('/host_groups');
+      props.history.push('/hostGroups');
     }).catch(error => {
       setLoading(false);
       if (error.response.status === 401) setError(error.response.data.message);
@@ -28,30 +26,26 @@ function Login(props) {
   }
 
   return (
-    <div className="login-form">
-      <h1 className="text-center">Welcome!</h1>
-      <h4 className="mb-5 text-center">ZABBIX - PROJECT</h4>
-      <FormGroup>
-          <Label>URL Address</Label>
-          <Input
-            type="text"
-            {...url}
-          />
-        </FormGroup>
-      <div className="form-group">
-        <label >Username</label>
-        <input type="text" {...username} className="form-control" ></input>
-      </div>
-      <div className="form-group">
-        <label >Password</label>
-        <input type="password" {...password} className="form-control" ></input>
-      </div>
-      <button type="submit" value={loading ? 'Loading...' : 'Login'} onClick={handleLogin} disabled={loading} className="btn-lg btn-dark btn-block">Submit</button>
+    <div>
+    Login<br /><br />
+    <div>
+      URL<br />
+      <input type="text" {...url} autoComplete="new-password" />
     </div>
-
-
-  );
+    <div>
+      Username<br />
+      <input type="text" {...username} autoComplete="new-password" />
+    </div>
+    <div style={{ marginTop: 10 }}>
+      Password<br />
+      <input type="password" {...password} autoComplete="new-password" />
+    </div>
+    {error && <><small style={{ color: 'red' }}>{error}</small><br /></>}<br />
+    <input type="button" value={loading ? 'Loading...' : 'Login'} onClick={handleLogin} disabled={loading} /><br />
+  </div>
+);
 }
+
 
 const useFormInput = initialValue => {
   const [value, setValue] = useState(initialValue);

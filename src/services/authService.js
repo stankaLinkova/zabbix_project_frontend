@@ -8,7 +8,7 @@ const apiEndpointMaps = apiUrl + "/maps";
 const apiEndpointLogout = apiUrl + "/logout";
 
 export function login(url, username, password) {
-  return http.post(apiEndpoint, { url, username, password });
+return http.post(apiEndpoint, { url, username, password });
 }
 
 export function getHostGroups() {

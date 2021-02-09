@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import DataTable from "react-data-table-component";
 import { getHosts } from "../services/authService";
+import {  logoutUser, removeUserSession } from '../Utils/Common';
 
 class TableOfHosts extends Component {
   constructor(props) {
@@ -33,6 +34,7 @@ class TableOfHosts extends Component {
 
     this.handleChange = this.handleChange.bind(this);
     this.handleMaps = this.handleMaps.bind(this);
+    this.handleChooseGroup = this.handleChooseGroup.bind(this);
   }
 
   async componentDidMount() {
@@ -60,13 +62,51 @@ class TableOfHosts extends Component {
     }
   };
 
+  handleLogout = async() => {
+    await logoutUser();
+    removeUserSession();
+    this.props.history.push('/login');
+  }
+
+  handleChooseGroup = () => {
+    this.props.history.push("/host_groups");
+  }
+
+
   render() {
     if (!this.state.isLoaded) {
       return <div>Loading...</div>;
     } else {
+      if(this.state.items.length==0){
+        return <div>
+          <div>
+            Please, choose the group of hosts first.
+          </div>
+          <button
+            type="button"
+            className="btn btn-dark"
+            onClick={this.handleChooseGroup}
+            >
+            CHOOSE THE GROUP OF HOSTS
+            </button>
+        </div>
+      } else {
       return (
         <div className="container">
+              <div className="col">
+              <button
+                type="button"
+                className="btn btn-outline-dark fixed-bottom m-2"
+                onClick={this.handleLogout}
+                >
+                Log out
+              </button>
+              </div>
+
+          
+          
           <DataTable
+          title={"HOSTS"}
             columns={this.columns}
             data={this.state.items}
             selectableRows
@@ -101,6 +141,7 @@ class TableOfHosts extends Component {
       );
     }
   }
+ }
 }
 
 export default TableOfHosts;

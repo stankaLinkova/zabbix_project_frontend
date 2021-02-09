@@ -23,16 +23,6 @@ class TableOfHostGroups extends Component {
         selector: "name",
         sortable: true,
       },
-      {
-        name: "Internal",
-        selector: "internal",
-        sortable: true,
-      },
-      {
-        name: "Flags",
-        selector: "flags",
-        sortable: true,
-      },
     ];
 
     this.handleChange = this.handleChange.bind(this);
@@ -52,11 +42,11 @@ class TableOfHostGroups extends Component {
   }
 
     // handle click event of logout button
-    handleLogout = async() => {
-      await logoutUser();
-      removeUserSession();
-      this.props.history.push('/login');
-    }
+  handleLogout = async() => {
+    await logoutUser();
+    removeUserSession();
+    this.props.history.push('/login');
+  }
   
 
   handleChange = (selectedRows) => {
@@ -70,11 +60,17 @@ class TableOfHostGroups extends Component {
 
   render() {
     if (!this.state.isLoaded) {
-      return <div><input type="button" onClick={this.handleLogout} value="Logout" />Loading...</div>;
+      return <div>Loading...</div>;
     } else {
       return (
         <div className="container">
-          <input type="button" onClick={this.handleLogout} value="Logout" />
+          <button
+            type="button"
+            className="btn btn-outline-dark fixed-bottom m-2"
+            onClick={this.handleLogout}
+            >
+            Log out
+          </button>
           <DataTable
             title={"HOST GROUPS"}
             columns={this.columns}
