@@ -19,9 +19,11 @@ const instance = axios.create({
   baseURL: apiUrl,
 });
 
-export default {
+const dictionary = {
   get: instance.get,
   post: instance.post,
   put: instance.put,
   delete: instance.delete,
 };
+
+export default dictionary

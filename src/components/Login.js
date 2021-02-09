@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
-import { setUserSession } from './Utils/Common';
-import http from "./services/httpService";
+import { setUserSession } from '../Utils/Common';
+import http from "../services/httpService";
+import { apiUrl } from "../config.json";
+import "../App.css";
 
 function Login(props) {
   const [loading, setLoading] = useState(false);
@@ -13,10 +15,10 @@ function Login(props) {
   const handleLogin = () => {
     setError(null);
     setLoading(true);
-    http.post('http://localhost:3000/api/v1/zabbix/login', { url: url.value, username: username.value, password: password.value }).then(response => {
+    http.post(apiUrl + '/login', { url: url.value, username: username.value, password: password.value }).then(response => {
       setLoading(false);
       setUserSession(response.data.token, response.data.user);
-      props.history.push('/dashboard');
+      props.history.push('/host_groups');
     }).catch(error => {
       setLoading(false);
       if (error.response.status === 401) setError(error.response.data.message);
@@ -25,23 +27,23 @@ function Login(props) {
   }
 
   return (
-    <div>
-      Login<br /><br />
-      <div>
-        URL<br />
-        <input type="text" {...url} autoComplete="new-password" />
+    <div className="login-form">
+      <div className="form-group">
+        <label >URL</label>
+        <input type="text" {...url} className="form-control"></input>
       </div>
-      <div>
-        Username<br />
-        <input type="text" {...username} autoComplete="new-password" />
+      <div className="form-group">
+        <label >Username</label>
+        <input type="text" {...username} className="form-control" ></input>
       </div>
-      <div style={{ marginTop: 10 }}>
-        Password<br />
-        <input type="password" {...password} autoComplete="new-password" />
+      <div className="form-group">
+        <label >Password</label>
+        <input type="password" {...password} className="form-control" ></input>
       </div>
-      {error && <><small style={{ color: 'red' }}>{error}</small><br /></>}<br />
-      <input type="button" value={loading ? 'Loading...' : 'Login'} onClick={handleLogin} disabled={loading} /><br />
+      <button type="submit" value={loading ? 'Loading...' : 'Login'} onClick={handleLogin} disabled={loading} className="btn btn-primary">Submit</button>
     </div>
+
+
   );
 }
 
