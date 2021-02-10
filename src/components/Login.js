@@ -3,7 +3,7 @@ import { setUserSession } from '../Utils/Common';
 import http from "../services/httpService";
 import { apiUrl } from "../config.json";
 import "../App.css";
-import { Button, FormGroup, Label, Input } from "reactstrap";
+import { FormGroup, Label, Input } from "reactstrap";
 
 function Login(props) {
   const [loading, setLoading] = useState(false);
@@ -37,15 +37,21 @@ function Login(props) {
             type="text"
             {...url}
           />
-        </FormGroup>
-      <div className="form-group">
-        <label >Username</label>
-        <input type="text" {...username} className="form-control" ></input>
-      </div>
-      <div className="form-group">
-        <label >Password</label>
-        <input type="password" {...password} className="form-control" ></input>
-      </div>
+      </FormGroup>
+      <FormGroup>
+          <Label>Username</Label>
+          <Input
+            type="text"
+            {...username}
+          />
+      </FormGroup>
+      <FormGroup>
+          <Label>Password</Label>
+          <Input
+            type="password"
+            {...password}
+          />
+      </FormGroup>
       <button type="submit" value={loading ? 'Loading...' : 'Login'} onClick={handleLogin} disabled={loading} className="btn-lg btn-dark btn-block">Submit</button>
     </div>
 

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { BrowserRouter, Switch, Route, NavLink } from 'react-router-dom';
+import { BrowserRouter, Switch, Route, NavLink} from 'react-router-dom';
 
 
 import Login from './components/Login';
@@ -13,13 +13,16 @@ import { getToken, removeUserSession, setUserSession } from './Utils/Common';
 
 import http from "./services/httpService";
 import {  logoutUser } from './Utils/Common';
-import {Redirect } from 'react-router-dom';
+
+import { Collapse, Navbar, NavbarToggler, Nav, NavItem, Button} from 'reactstrap';
 
 
 function App() {
   const [authLoading, setAuthLoading] = useState(true);
   const [groupsId, setgroupsId] = useState([])
   const [hostsId, sethostsId] = useState([])
+  const [isOpen, setIsOpen] = useState(false)
+  const [isLoaded, setIsLoaded ] = useState(false)
 
   useEffect(() => {
     const token = getToken();
@@ -36,9 +39,7 @@ function App() {
     });
   }, []);
 
-  if (authLoading && getToken()) {
-    return <div className="content">Checking Authentication...</div>
-  }
+
 
   const handleHosts = (groups) => {
     let idsSelected = [];
@@ -56,7 +57,25 @@ function App() {
     sethostsId(idsSelected);
   };
 
+  const handleLogout = async() => {
+    await logoutUser();
+    removeUserSession();
+    return (
+      window.location.reload(false)
+    )
+  }
 
+  const toggle = () => {
+    if(isOpen){
+      setIsOpen(false);
+    } else {
+      setIsOpen(true);
+    }
+  }
+
+  const handleLoaded = () => {    
+    setIsLoaded(true);
+  }
 
   return (
     <div className="App">
@@ -64,30 +83,23 @@ function App() {
       <BrowserRouter>
 
         <div>
-          <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
-            <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo03" aria-controls="navbarTogglerDemo03" aria-expanded="false" aria-label="Toggle navigation">
-              <span className="navbar-toggler-icon"></span>
-            </button>
-            {/* <a class="navbar-brand" href="#">Navbar</a> */}
-
-            <div className="collapse navbar-collapse" id="navbarTogglerDemo03">
-              <ul className="navbar-nav mr-auto mt-2 mt-lg-0">
-                <li className="nav-item">
-                  <div className="nav-link"><NavLink style={{ color: 'white' }} exact activeClassName="active" to="/">Home</NavLink></div>
-                </li>
-                <li className="nav-item">
-                  <div className="nav-link"><NavLink style={{ color: 'white' }} activeClassName="active" to="/login">Login</NavLink></div>
-                </li>
-                <li className="nav-item">
-                  <div className="nav-link"><NavLink style={{ color: 'white' }} activeClassName="active" to="/host_groups">Host Groups</NavLink></div>
-                </li>
-              </ul>
-            </div>
-          </nav>
+          <Navbar color="dark"  light expand="md">
+          <NavbarToggler onClick={toggle} />
+          <Collapse isOpen={isOpen} navbar>
+                <NavLink style={{ color: 'white' }} exact activeClassName="active" className="m-2" to="/">Home</NavLink>
+                <NavLink style={{ color: 'white' }} activeClassName="active" className="m-2" to="/login">Login</NavLink>
+                <NavLink style={{ color: 'white' }} activeClassName="active" className="m-2" to="/host_groups">Host Groups</NavLink>
+                
+                
+                <Nav className="ml-auto" navbar>
+                    <NavItem>
+                      {isLoaded && <Button className="btn btn-light" onClick={() => handleLogout()}>Logout</Button>}
+                    </NavItem>
+                  </Nav>
+            </Collapse>
+          </Navbar>
           
-
-
-
+          
 
           <div className="container-fluid">
             <Switch>
@@ -96,6 +108,7 @@ function App() {
               <PrivateRoute path="/host_groups" component={(props) => (
                 <TableOfHostGroups
                   {...props}
+                  onSetLoaded={handleLoaded}
                   onGetHosts={handleHosts}
                 ></TableOfHostGroups>
               )}

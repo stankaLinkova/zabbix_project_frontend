@@ -3,11 +3,6 @@ import DataTable from "react-data-table-component";
 
 import { getHostGroups } from "../services/authService";
 
-import {  logoutUser } from '../Utils/Common';
-
-
-import {  removeUserSession } from '../Utils/Common';
-
 class TableOfHostGroups extends Component {
   constructor(props) {
     super(props);
@@ -36,17 +31,12 @@ class TableOfHostGroups extends Component {
       const { data: post } = await getHostGroups();
       this.setState({ items: post });
       this.setState({ isLoaded: true });
+      this.props.onSetLoaded();
     } catch (error) {
       this.props.history.push("/");
     }
   }
 
-    // handle click event of logout button
-  handleLogout = async() => {
-    await logoutUser();
-    removeUserSession();
-    this.props.history.push('/login');
-  }
   
 
   handleChange = (selectedRows) => {
@@ -64,13 +54,6 @@ class TableOfHostGroups extends Component {
     } else {
       return (
         <div className="container">
-          <button
-            type="button"
-            className="btn btn-outline-dark fixed-bottom m-2"
-            onClick={this.handleLogout}
-            >
-            Log out
-          </button>
           <DataTable
             title={"HOST GROUPS"}
             columns={this.columns}

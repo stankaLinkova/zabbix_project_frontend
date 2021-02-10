@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import DataTable from "react-data-table-component";
 import { getHosts } from "../services/authService";
-import {  logoutUser, removeUserSession } from '../Utils/Common';
 
 class TableOfHosts extends Component {
   constructor(props) {
@@ -62,11 +61,6 @@ class TableOfHosts extends Component {
     }
   };
 
-  handleLogout = async() => {
-    await logoutUser();
-    removeUserSession();
-    this.props.history.push('/login');
-  }
 
   handleChooseGroup = () => {
     this.props.history.push("/host_groups");
@@ -92,18 +86,7 @@ class TableOfHosts extends Component {
         </div>
       } else {
       return (
-        <div className="container">
-              <div className="col">
-              <button
-                type="button"
-                className="btn btn-outline-dark fixed-bottom m-2"
-                onClick={this.handleLogout}
-                >
-                Log out
-              </button>
-              </div>
-
-          
+        <div className="container">         
           
           <DataTable
           title={"HOSTS"}
