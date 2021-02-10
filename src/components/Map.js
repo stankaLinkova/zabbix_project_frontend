@@ -14,7 +14,7 @@ class Map extends Component {
     this.columns = [
       {
         name: "THE LINKS TO THE MAPS",
-        cell: (row)=> row.charAt(0)=='h' ? <a href={row}>{row}</a> : <a>{row}</a>
+        cell: (row)=> row.map_link ? <div>{row.map_name} <a href={row.map_link}>{row.map_link}</a></div> : <a>{row}</a>
       },
     ];
 
@@ -47,7 +47,7 @@ class Map extends Component {
      if (items[index].error === undefined){
        maps.push(items[index]);
      } else {
-       maps.push(items[index].error.data);
+       maps.push(items[index].error.on_rpc.params.name+"; "+items[index].error.message+"; "+items[index].error.on_rpc.method);
        console.log('Vo fore', items[index].error);
      }      
     }
