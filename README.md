@@ -4,7 +4,7 @@ This project consists of two parts:
  - backend: https://gitlab.science.upjs.sk/matusrevicky/zabbix_api_backend
  - frontend: https://gitlab.science.upjs.sk/stanka/zabbix_project_frontend
 
-First of all, run the backend by following the instructions: https://gitlab.science.upjs.sk/matusrevicky/zabbix_api_backend/-/blob/master/README.md
+First of all, run the backend by following the instructions: https://gitlab.science.upjs.sk/matusrevicky/zabbix_api_backend/-/blob/master/README.md \n
 After successful start of the backend, it's time for the frontend.
 
 ## Setup
@@ -16,10 +16,10 @@ Follow below steps to run project
 The project runs on localhost:3001.
 
 ## Create a map in zabbix
-1. Log in with default credentials. 
-URL: http://127.0.0.1
-Username: Admin
-Password: zabbix
+1. Log in with default credentials. \n
+URL: http://127.0.0.1 \n
+Username: Admin \n
+Password: zabbix \n
 
 ![login](/images/login.png)
 
