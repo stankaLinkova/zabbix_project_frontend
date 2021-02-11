@@ -36,7 +36,7 @@ Password: zabbix
 
 ![host_map](/images/host_map.png)
 ![host_map2](/images/host_no_map.png)
-![map](/images/map.png)
+![map](/images/link_to_map.png)
 
 If you click on the link, it redirects you to the zabbix, where the map is created.
 
