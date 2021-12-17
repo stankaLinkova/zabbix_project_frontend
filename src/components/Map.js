@@ -14,7 +14,7 @@ class Map extends Component {
     this.columns = [
       {
         name: "THE LINKS TO THE MAPS",
-        cell: (row)=> row.map_link ? <div>{row.map_name} <a href={row.map_link}>{row.map_link}</a></div> : <a>{row}</a>
+        cell: (row) => row.map_link ? <div>{row.map_name} <a href={row.map_link}>{row.map_link}</a></div> : <a>{row}</a>
       },
     ];
 
@@ -25,39 +25,35 @@ class Map extends Component {
     try {
       let { data: post } = await getMaps(this.props.hostsId);
       const test = post[0].error;
-      this.setState({items: post});
+      this.setState({ items: post });
       this.setState({ isLoaded: true });
 
-    
+
     } catch (err) {
       this.props.history.push("/");
     }
   }
 
-  
+
   handleMapExists() {
     this.props.history.push("/hosts");
   }
 
-  handleItems(){
+  handleItems() {
     let maps = [];
     let items = this.state.items;
-    console.log("Pred forom");
     for (let index = 0; index < items.length; index++) {
-     if (items[index].error === undefined){
-       maps.push(items[index]);
-     } else {
-       maps.push(items[index].error.on_rpc.params.name+"; "+items[index].error.message+"; "+items[index].error.on_rpc.method);
-       console.log('Vo fore', items[index].error);
-     }      
+      if (items[index].error === undefined) {
+        maps.push(items[index]);
+      } else {
+        maps.push(items[index].error.on_rpc.params.name + "; " + items[index].error.message + "; " + items[index].error.on_rpc.method);
+      }
     }
-
-    console.log('Cele maps', maps);
     return maps;
   }
 
   render() {
-   if (!this.state.isLoaded) {
+    if (!this.state.isLoaded) {
       return <div>Loading...</div>;
     } else {
       return (
